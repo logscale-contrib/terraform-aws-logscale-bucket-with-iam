@@ -105,7 +105,7 @@ module "iam_iam-policy" {
   version = "5.5.2"
 
   name = "${var.uniqueName}_${var.namespace}_${var.sa}"
-  policy = {
+  policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
       {
@@ -156,7 +156,7 @@ module "iam_iam-policy" {
         ]
       }
     ]
-  }
+  })
 
   tags = local.tags
 }
