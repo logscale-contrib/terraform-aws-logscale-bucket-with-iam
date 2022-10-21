@@ -130,8 +130,8 @@ module "iam_iam-policy" {
           "s3:GetObjectVersion"
         ],
         "Resource" : [
-          "${module.s3-bucket.s3_bucket_id}/*",
-          module.s3-bucket.s3_bucket_id
+          "${module.s3-bucket.s3_bucket_arn}/*",
+          module.s3-bucket.s3_bucket_arn
         ]
       },
       {
