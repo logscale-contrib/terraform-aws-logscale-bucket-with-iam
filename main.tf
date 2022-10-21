@@ -38,7 +38,7 @@ module "kms" {
   key_administrators                     = [local.current_identity]
   key_users                              = [local.current_identity]
   key_service_users                      = [local.current_identity]
-  key_symmetric_encryption_users         = [local.current_identity, mdoule.irsa.iam_role_arn]
+  key_symmetric_encryption_users         = [local.current_identity, module.irsa.iam_role_arn]
   key_hmac_users                         = [local.current_identity]
   key_asymmetric_public_encryption_users = [local.current_identity]
   key_asymmetric_sign_verify_users       = [local.current_identity]
