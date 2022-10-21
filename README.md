@@ -1,0 +1,1 @@
+# terraform-aws-logscale-bucket-with-iam
