@@ -55,7 +55,7 @@ module "s3-bucket" {
   version = "3.4.0"
 
   attach_deny_insecure_transport_policy = true
-  bucket_prefix                         = "logscale-${local.env}-ops"
+  bucket_prefix                         = var.uniqueName
 
   block_public_acls       = true
   block_public_policy     = true
