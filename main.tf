@@ -15,9 +15,9 @@ module "irsa" {
 
   role_name = "${var.uniqueName}_${var.namespace}_${var.sa}"
 
-  # role_policy_arns = {
-  #   "object" = module.iam_iam-policy.arn
-  # }
+  role_policy_arns = {
+    "object" = module.iam_iam-policy.arn
+  }
 
   oidc_providers = {
     main = {
@@ -141,7 +141,7 @@ module "iam_iam-policy" {
           "s3:ListBucket",
           "s3:HeadBucket"
         ],
-        "Resource" : module.s3-bucket.s3_bucket_id
+        "Resource" : module.s3-bucket.s3_bucket_arn
       },
       {
         "Sid" : "KMSEncryptDecrypt",
