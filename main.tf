@@ -89,4 +89,8 @@ module "s3-bucket" {
       }
     }
   }
+
+
+
+  tags = local.tags
 }
