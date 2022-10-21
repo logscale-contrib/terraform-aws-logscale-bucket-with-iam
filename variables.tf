@@ -15,7 +15,3 @@ variable "namespace" {
 variable "sa" {
 
 }
-
-variable "values" {
-  # type = map(any)
-}
