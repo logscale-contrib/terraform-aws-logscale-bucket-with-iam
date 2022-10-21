@@ -154,7 +154,7 @@ module "iam_iam-policy" {
           "kms:DescribeKey"
         ],
         "Resource" : [
-          "${var.uniqueName}-ops-s3"
+          module.kms.key_arn
         ]
       }
     ]
