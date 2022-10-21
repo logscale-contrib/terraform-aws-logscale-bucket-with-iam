@@ -15,6 +15,7 @@ module "irsa" {
 
   role_name = "${var.uniqueName}_${var.namespace}_${var.sa}"
 
+  role_policy_arns = [module.iam_iam-policy.arn]
 
   oidc_providers = {
     main = {
@@ -22,6 +23,8 @@ module "irsa" {
       namespace_service_accounts = ["${var.namespace}:${var.sa}"]
     }
   }
+
+  #, module.irsa.iam_role_arn
 
   tags = local.tags
 }
@@ -38,7 +41,7 @@ module "kms" {
   key_administrators                     = [local.current_identity]
   key_users                              = [local.current_identity]
   key_service_users                      = [local.current_identity]
-  key_symmetric_encryption_users         = [local.current_identity, module.irsa.iam_role_arn]
+  key_symmetric_encryption_users         = [local.current_identity]
   key_hmac_users                         = [local.current_identity]
   key_asymmetric_public_encryption_users = [local.current_identity]
   key_asymmetric_sign_verify_users       = [local.current_identity]
@@ -90,7 +93,70 @@ module "s3-bucket" {
     }
   }
 
+  attach_policy = true
 
+
+  tags = local.tags
+}
+
+
+module "iam_iam-policy" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
+  version = "5.5.2"
+
+  name = "${var.uniqueName}_${var.namespace}_${var.sa}"
+  policy = {
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid" : "FullAccess",
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:GetLifecycleConfiguration",
+          "s3:DeleteObjectVersion",
+          "s3:ListBucketVersions",
+          "s3:GetBucketLogging",
+          "s3:RestoreObject",
+          "s3:ListBucket",
+          "s3:GetBucketVersioning",
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:PutLifecycleConfiguration",
+          "s3:GetBucketCORS",
+          "s3:DeleteObject",
+          "s3:GetBucketLocation",
+          "s3:GetObjectVersion"
+        ],
+        "Resource" : [
+          "${module.s3-bucket.s3_bucket_id}/*",
+          module.s3-bucket.s3_bucket_id
+        ]
+      },
+      {
+        "Sid" : "ListBucket",
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:ListBucket",
+          "s3:HeadBucket"
+        ],
+        "Resource" : module.s3-bucket.s3_bucket_id
+      },
+      {
+        "Sid" : "KMSEncryptDecrypt",
+        "Effect" : "Allow",
+        "Action" : [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:GenerateDataKey",
+          "kms:ReEncrypt*",
+          "kms:DescribeKey"
+        ],
+        "Resource" : [
+          "${var.uniqueName}-ops-s3"
+        ]
+      }
+    ]
+  }
 
   tags = local.tags
 }
