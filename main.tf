@@ -15,7 +15,7 @@ module "irsa" {
 
   role_name = "${var.uniqueName}_${var.namespace}_${var.sa}"
 
-  role_policy_arns = [module.iam_iam-policy.arn]
+  role_policy_arns = [module.iam_iam-policy.id]
 
   oidc_providers = {
     main = {
