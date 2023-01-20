@@ -105,7 +105,7 @@ module "s3-bucket" {
 
 module "iam_iam-policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "5.5.2"
+  version = "5.10.0"
 
   name = "${var.uniqueName}_${var.namespace}_${var.sa}"
   policy = jsonencode({
