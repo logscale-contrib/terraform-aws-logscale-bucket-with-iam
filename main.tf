@@ -57,7 +57,7 @@ module "kms" {
 
 module "s3-bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "3.6.0"
+  version = "3.6.1"
 
   attach_deny_insecure_transport_policy = true
   bucket_prefix                         = var.uniqueName
@@ -66,7 +66,7 @@ module "s3-bucket" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
-  force_destroy = var.force_destroy
+  force_destroy           = var.force_destroy
   server_side_encryption_configuration = {
     rule = {
       apply_server_side_encryption_by_default = {
@@ -96,6 +96,25 @@ module "s3-bucket" {
     }
   }
 
+  lifecycle_rule = [
+    {
+      id      = "tmp"
+      enabled = true
+      filter = {
+        prefix = "tmp/"
+      }
+      abort_incomplete_multipart_upload_days = 2
+      noncurrent_version_expiration = {
+        days = 1
+      }
+      expiration = {
+        days                         = 3
+        expired_object_delete_marker = true
+      }
+
+    },
+
+  ]
   attach_policy = true
 
 

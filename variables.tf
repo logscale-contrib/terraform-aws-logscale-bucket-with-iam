@@ -3,9 +3,9 @@ variable "uniqueName" {
   description = "(optional) describe your variable"
 }
 variable "force_destroy" {
-  type = bool
+  type        = bool
   description = "(optional) describe your variable"
-  default = false
+  default     = false
 }
 variable "eks_oidc_provider_arn" {
   type        = string
