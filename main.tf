@@ -98,6 +98,38 @@ module "s3-bucket" {
 
   lifecycle_rule = [
     {
+      id      = "default"
+      enabled = true
+      # filter = {
+      #   prefix = "globalsnapshots/"
+      # }
+      abort_incomplete_multipart_upload_days = 2
+      noncurrent_version_expiration = {
+        days = 7
+      }
+      expiration = {
+        days                         = 36500
+        expired_object_delete_marker = true
+      }
+
+    },
+    {
+      id      = "globalsnapshots"
+      enabled = true
+      filter = {
+        prefix = "globalsnapshots/"
+      }
+      abort_incomplete_multipart_upload_days = 2
+      noncurrent_version_expiration = {
+        days = 1
+      }
+      expiration = {
+        days                         = 3
+        expired_object_delete_marker = true
+      }
+
+    },
+    {
       id      = "tmp"
       enabled = true
       filter = {
