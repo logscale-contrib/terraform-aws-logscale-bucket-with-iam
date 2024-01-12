@@ -57,7 +57,7 @@ module "kms" {
 
 module "s3-bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "3.6.1"
+  version = "3.15.2"
 
   attach_deny_insecure_transport_policy = true
   bucket_prefix                         = var.uniqueName
