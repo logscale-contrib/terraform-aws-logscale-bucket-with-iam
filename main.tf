@@ -34,7 +34,7 @@ module "irsa" {
 
 module "kms" {
   source  = "terraform-aws-modules/kms/aws"
-  version = "1.3.0"
+  version = "2.2.0"
 
   key_usage = "ENCRYPT_DECRYPT"
 
